@@ -52,15 +52,6 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
-# resource "aws_security_group_rule" "allow_ssh" {
-#   type              = "ingress"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   cidr_blocks       = ["5.70.53.91/32"]
-#   ipv6_cidr_blocks = ["split("\n", data.http.myipaddr.body}/128"]
-#   security_group_id = aws_security_group.allow_ssh.id
-#   }
 
 
 resource "aws_security_group_rule" "allow_ssh" {
@@ -73,6 +64,28 @@ resource "aws_security_group_rule" "allow_ssh" {
   security_group_id = aws_security_group.allow_ssh.id
 }
 
+
+resource "aws_security_group_rule" "allow_ingress" {
+  type              = "ingress"
+  from_port         = 3000
+  to_port           = 3000
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+
+  security_group_id = aws_security_group.allow_ssh.id
+}
+
+resource "aws_security_group_rule" "allow_ingress2" {
+  type              = "ingress"
+  from_port         = 3001
+  to_port           = 3001
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+
+  security_group_id = aws_security_group.allow_ssh.id
+}
 
 resource "aws_security_group" "allow_egress" {
   name        = "allow_egress"
@@ -92,3 +105,4 @@ resource "aws_security_group_rule" "allow_egress" {
   ipv6_cidr_blocks  = ["::/0"]
   security_group_id = aws_security_group.allow_egress.id
 }
+
