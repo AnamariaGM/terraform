@@ -34,5 +34,13 @@ module "app" {
   key_name           = var.key_name
 
 }
+module "load_balancer"{
+  source = "./modules/load_balancer"
+  services = module.app.services
+  port = var.port
+  vpc_id = module.networking.vpc_id
+  security_group_ids = module.security.security_group_ids
+  public_subnets_ids = module.networking.public_subnets_ids
+}
 
 

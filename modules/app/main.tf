@@ -1,14 +1,14 @@
 locals {
   subnet_mapping = {
-    "Lighting" = var.public_subnets[0].id,
-    "Heating"  = var.public_subnets[1].id, 
-    "Status" =var.public_subnets[2].id 
+    "Lighting" = var.public_subnets[0],
+    "Heating"  = var.public_subnets[1], 
+    "Status" =var.public_subnets[2] 
   }
 
   serverconfig = flatten([
     for config_name, server in var.configuration : [
       for i in range(1, server["no_of_instances"] + 1) : {
-        instance_name          = "${server["app_name"]}-${i}"
+        instance_name          = "${server["app_name"]}"
         instance_type          = server["instance_type"]
         instance_profile_name  = local.instance_profile_name_single
         subnet_id              = local.subnet_mapping[config_name]

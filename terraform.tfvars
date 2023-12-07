@@ -8,17 +8,17 @@ iam_user_name          = "project_user"
 policy_name            = "AmazonDynamoDBFullAccess"
 configuration = {
   "Lighting" = {
-    app_name        = "Lighting",
+    app_name        = "lighting",
     no_of_instances = 1,
     instance_type   = "t2.micro"
   },
   "Heating" = {
-    app_name        = "Heating",
+    app_name        = "heating",
     no_of_instances = 1,
     instance_type   = "t2.micro"
   },
   "Status"={
-    app_name = "Status",
+    app_name = "status",
     no_of_instances = 1,
     instance_type = "t2.micro"
   }
@@ -31,3 +31,4 @@ dynamodb_tables= [
   { name = "lighting_table", primary_key = "id" },
   { name = "heating", primary_key = "id" },
 ]
+port = 3000
