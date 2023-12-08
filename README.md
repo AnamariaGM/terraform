@@ -1,55 +1,140 @@
-# Terraform project
+# Infrastructure as Code with Terraform
 
-![A hero starting their journey looking at a tower](./media/images/journey.png "A hero starting their journey looking at a tower")
+This repository contains Terraform configurations for setting up a scalable and secure infrastructure on AWS.
 
-It is time to take those Terraform skills you have been developing and create your own project.
+## Overview
 
-Time to start your journey and create a brand new Terraform project from scratch.
+The Terraform configuration in this repository is designed to dynamically create and manage AWS infrastructure components using modularization and loops. The infrastructure consists of several modules that handle networking, security, application deployment, load balancing, and auto-scaling.
 
-Side note: The image is what AI generated when the words "success, journey and terraform logo" were put into the tool 🤷
+## Modules
 
-You can find the trello board to copy for your project below
+### 1. Networking Module
 
-[Cloud Ops Terraform Project Template](https://trello.com/b/ANaPDxTY/ce-terraform-project-template)
+This module sets up the foundational networking components, including a Virtual Private Cloud (VPC) and multiple subnets across different availability zones.
 
-## Requirements
+#### Variables
 
-The target for this project is to create a hosted network of microservices that mocks a smart home network with; a central status service, a lighting service, and a heating service.
+- `azs`: List of availability zones.
 
-But that isn't everything....
+#### Outputs
 
-Your solution should;
+- `vpc_id`: The ID of the created VPC.
 
-- Be completed using terraform
-- Be a production ready network setup with both public and private subnets
-- Make use of terraform variables and looping where possible
-- Make your code as DRY and reusable as possible by creating modules where you can
-- Have DynamoDB tables to account for the services that need them
-- Be created with 'design for failure' in mind - we do not want a loss of service if one of the EC2 instances fails
-- Be considerate and intentional of how your files and directory structures are named
+### 2. Security Module
 
-[Here](https://trello.com/b/ANaPDxTY/ce-terraform-project-template) you will find a trello board with the tickets needed to finish this project.
+The security module configures security-related resources, such as security groups and associated rules. It ensures that the communication between different components adheres to security best practices.
 
-## Tearing things down
+#### Variables
 
-You should run `terraform destroy` to remove everything at the end of each day, if you've created your code well it should be able to recreate each time without issue.
+- `vpc_id`: The ID of the VPC to associate security groups with.
 
-## Submission process
+#### Outputs
 
-1. Fork this GitHub repository
+- `security_group_ids`: List of security group IDs.
 
-2. Make a branch for each tickets code `git checkout -b NEW_BRANCH_NAME`
+### 3. DynamoDB Module
 
-3. Create a Pull Request and merge the branch back into main on GitHub when the ticket is done
+This module is responsible for creating DynamoDB tables based on the provided configuration. It supports the dynamic creation of multiple tables, each with its own set of properties.
 
-4. Submit the Pull Request link to `nchelp pr`
+#### Variables
 
-5. Checkout back to the main branch `git checkout main` and pull your code to the main branch `git pull origin main`
+- `dynamodb_tables`: List of DynamoDB table configurations.
 
-6. Create a new branch for the next ticket and repeat until finished.
 
-## Further reading
+### 4. App Module
 
-[Terraform directory structure tips](https://xebia.com/blog/four-tips-to-better-structure-terraform-projects/)
+The app module handles the deployment of application-related resources. It dynamically creates IAM roles, EC2 instances, and other necessary components based on the provided configurations.
 
-[Terraform best practices structure](https://www.terraform-best-practices.com/examples/terraform)
+#### Variables
+
+- `public_subnets`: List of public subnets.
+- `security_group_ids`: List of security group IDs.
+- `iam_instance_profile`: The IAM instance profile.
+- `iam_user_name`: The IAM user name.
+- `policy_name`: The IAM policy name.
+- `configuration`: Map of application configurations.
+- `instance_profile_name`: The IAM instance profile name.
+- `key_name`: The EC2 key name.
+
+
+### 5. Load Balancer Module
+
+The load balancer module sets up an application load balancer to distribute incoming traffic among multiple services dynamically created in the app module.
+
+#### Variables
+
+- `services`: Map of services to be load-balanced.
+- `vpc_id`: The ID of the VPC.
+- `port`: The port to configure on the load balancer.
+- `public_subnets_ids`: List of public subnet IDs.
+- `security_group_ids`: List of security group IDs.
+
+#### Outputs
+
+- `target_group_arns`: List of target group ARNs.
+
+### 6. AutoScaling Module
+
+This module manages auto-scaling configurations for EC2 instances based on the dynamically created services. It ensures that the infrastructure scales based on demand.
+
+#### Variables
+
+- `instances_ids`: List of EC2 instance IDs.
+- `services_names`: List of service names.
+- `min_instances`: Minimum number of instances in the auto-scaling group.
+- `desired_instances`: Desired number of instances in the auto-scaling group.
+- `max_instances`: Maximum number of instances in the auto-scaling group.
+- `public_subnets_ids`: List of public subnet IDs.
+- `services`: Map of services with their names and IDs.
+- `target_group_arn`: List of target group ARNs.
+- `azs`: List of availability zones.
+
+## Dynamic Code and Loops
+
+The Terraform configurations in this repository leverage the power of dynamic code and loops to create and manage multiple resources efficiently. For example, the app and load balancer modules dynamically create resources for each service in the provided list, eliminating the need for manual configurations.
+
+## Usage
+
+### Setting up the Infrastructure
+
+1. **Clone this repository.**
+
+```bash
+git clone https://github.com/your/repository.git
+cd repository
+```
+
+2. **Initialize Terraform.**
+
+```bash
+terraform init
+```
+
+3. **Customize your environment by modifying the `terraform.tfvars` file.**
+
+4. **Apply the Terraform configuration.**
+
+```bash
+terraform apply
+```
+
+### Deploying in Different Environments
+
+To deploy the infrastructure in a different environment (e.g., dev vs. production), create separate Terraform configuration files, such as `terraform.dev.tfvars` and `terraform.prod.tfvars`. Adjust the variable values based on your environment requirements.
+
+Apply the configuration using:
+
+```bash
+terraform apply -var-file=terraform.dev.tfvars
+```
+or
+```bash
+terraform apply -var-file=terraform.prod.tfvars
+```
+
+Cleanup
+
+To destroy the created infrastructure, run:
+```bash
+terraform destroy
+```
