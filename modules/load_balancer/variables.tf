@@ -7,9 +7,7 @@ variable "services" {
 variable "vpc_id" {
   
 }
-# variable "instances_ids" {
- 
-# }
+
 variable "port"{
 
 }

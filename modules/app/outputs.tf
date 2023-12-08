@@ -12,10 +12,10 @@ output "dynamodb_policy_arn" {
   value = data.aws_iam_policy.dynamodb_policy.arn
 }
 
-# output "instances_ids" {
-#   value = aws_instance.app_server[*].id
-  
-# }
+output "instances_ids" {
+  value = [for instance_name, instance in aws_instance.app_server : instance.id]
+}
+
 output "services" {
   value = {
     for service in aws_instance.app_server : service.tags.Name => {

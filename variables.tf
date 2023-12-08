@@ -41,3 +41,16 @@ variable "dynamodb_tables" {
 variable port {
   type=number
 }
+variable "services_names" {
+  type = list(string)
+  
+}
+variable "min_instances" {
+  type = number
+}
+variable "max_instances" {
+  type = number
+}
+variable "desired_capacity" {
+  type = number
+}
