@@ -1,8 +1,4 @@
 
-# data "aws_iam_policy" "dynamodb_policy" {
-#     # arn = "arn:aws:iam::YOUR_ACCOUNT_ID:policy/DynamoDBAccessPolicy"
-#   name = var.policy_name
-# }
 data "aws_iam_user" "iam_user" {
   user_name = var.iam_user_name
 

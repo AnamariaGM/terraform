@@ -17,9 +17,7 @@ resource "aws_security_group_rule" "allow_http" {
   ipv6_cidr_blocks  = ["::/0"]
   security_group_id = aws_security_group.allow_http.id
 
-#   tags = {
-#     Name = "allow_http"
-#   }
+
 
 }
 resource "aws_security_group" "allow_https" {

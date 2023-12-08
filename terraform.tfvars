@@ -1,8 +1,4 @@
 region              = "eu-west-2"
-# dynamodb_table_name = "db_table"
-# count = 3
-# partition_key_dynamodb = "id"
-# sort_key_dynamodb      = "location"
 instance_type          = "t2.micro"
 iam_user_name          = "project_user"
 policy_name            = "AmazonDynamoDBFullAccess"
@@ -32,3 +28,8 @@ dynamodb_tables= [
   { name = "heating", primary_key = "id" },
 ]
 port = 3000
+
+services_names = [ "lighting","heating","status" ]
+ min_instances = 1
+ max_instances = 3
+ desired_capacity = 1

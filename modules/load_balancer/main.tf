@@ -58,37 +58,3 @@ resource "aws_lb_listener_rule" "target_group_rules" {
     }
   }
 }
-
-
-
-# resource "aws_lb_listener" "http_listener" {
-#   load_balancer_arn = aws_lb.application_load_balancer.arn
-#   port              = 80
-#   protocol          = "HTTP"
-
-#   dynamic "default_action" {
-#     for_each = aws_lb_target_group.target_groups
-
-#     content {
-#       type             = "forward"
-#       target_group_arn = default_action.value.arn
-#     }
-#   }
-# }
-
-# resource "aws_lb_listener_rule" "target_group_rules" {
-#   for_each      = var.services
-#   listener_arn  = aws_lb_listener.http_listener.arn
-
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.target_groups[each.key].arn
-#   }
-
-#   condition {
-#     path_pattern {
-#       values = ["/api/${each.value.name}/*"]
-#     }
-#   }
-# }
-

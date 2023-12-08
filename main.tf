@@ -26,7 +26,6 @@ module "app" {
   instance_profile_name = var.instance_profile_name
   iam_instance_profile  = var.instance_profile_name
   configuration         = var.configuration
-  # instance_type = var.configuration
 
   security_group_ids = module.security.security_group_ids
   public_subnets     = module.networking.public_subnets_ids
@@ -44,3 +43,17 @@ module "load_balancer"{
 }
 
 
+module "autoscaling" {
+  source = "./modules/autoscaling"
+  services_names = var.services_names
+  min_instances = var.min_instances
+  public_subnets_ids = module.networking.public_subnets_ids
+  instances_ids = module.app.instances_ids
+  max_instances = var.max_instances
+  desired_instances = var.desired_capacity
+  services = module.app.services
+  target_group_arn = module.load_balancer.target_group_arns
+  azs = data.aws_availability_zones.available.names
+
+  
+}
