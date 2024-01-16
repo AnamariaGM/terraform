@@ -23,7 +23,6 @@ resource "aws_launch_template" "launch_template" {
     placement {
     availability_zone = var.azs[0]
   }
-    # user_data = filebase64("${path.module}/example.sh")
 
 }
 

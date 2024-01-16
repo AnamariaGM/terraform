@@ -32,22 +32,5 @@ resource "aws_instance" "app_server" {
   associate_public_ip_address = true
   iam_instance_profile        = data.aws_iam_instance_profile.app-instance_profile.name
   key_name                    = var.key_name
-  # user_data                   = <<-EOF
-  #             #!/bin/bash
-  #             sudo apt-get update
-  #             sudo apt-get install -y aws-cli
-  #             EOF
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "terraform init",
-  #     "terraform apply -var 'dynamodb_table_name=${each.value.instance_name}_table' -auto-approve",
-  #   ]
-  # }
-  # connection {
-  #   type        = "ssh"
-  #   user        = "ubuntu"
-  #   private_key = file("/home/anamaria/Downloads/first-ec2.pem")
-  #   host        = self.public_ip
-  # }
 }
 
