@@ -1,6 +1,8 @@
-# Infrastructure as Code with Terraform
+# Infrastructure as Code for Microservices with Terraform
 
-This repository contains Terraform configurations for setting up a scalable and secure infrastructure on AWS.
+
+This repository contains Terraform configurations for setting up a scalable and secure infrastructure on AWS to support microservices architecture.
+
 
 ## Overview
 

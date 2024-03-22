@@ -1,5 +1,3 @@
-
-
 variable "dynamodb_tables" {
         type = list(object({
         name =string

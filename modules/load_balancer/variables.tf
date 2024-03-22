@@ -4,17 +4,15 @@ variable "services" {
     id = string
   }))
 }
-variable "vpc_id" {
-  
+
+variable "vpc_id" {  
 }
 
 variable "port"{
-
 }
 
 variable "public_subnets_ids" {
-  
 }
-variable "security_group_ids" {
-  
+
+variable "security_group_ids" { 
 }

@@ -1,7 +1,5 @@
-
 output "iam_instance_profile" {
   value = local.instance_profile_name_single
-
 
 }
 output "iam_user_arn" {
